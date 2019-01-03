@@ -1,0 +1,16 @@
+{
+  "name": "@cfn-modules/ecs-alb-target",
+  "version": "1.0.0",
+  "description": "ECS ALB target",
+  "author": "Michael Wittig <michael@widdix.de>",
+  "license": "Apache-2.0",
+  "keywords": ["cfn-modules", "cfn-modules:ExposeArn", "cfn-modules:ExposeSecurityGroupId"],
+  "homepage": "https://github.com/cfn-modules",
+  "bugs": {
+    "url": "https://github.com/cfn-modules/ecs-alb-target/issues"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/cfn-modules/ecs-alb-target.git"
+  }
+}
