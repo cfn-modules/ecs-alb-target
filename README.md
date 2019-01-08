@@ -31,7 +31,7 @@ Resources:
         Priority: '1' # optional
         HostPattern: '' # optional
         PathPattern: '/*' # optional
-        DeregistrationDelayInSeconds: '300' # optional
+        DeregistrationDelayInSeconds: '60' # optional
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
 ```
 
@@ -100,7 +100,7 @@ Resources:
     <tr>
       <td>DeregistrationDelayInSeconds</td>
       <td>The amount of time, in seconds, for Elastic Load Balancing to wait before changing the state of a deregistering target from draining to unused</td>
-      <td>300</td>
+      <td>60</td>
       <td>no</td>
       <td>0-3600</td>
     </tr>

@@ -141,7 +141,7 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.0.1'
+    Value: '1.0.2'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:
