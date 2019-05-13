@@ -81,7 +81,7 @@ Resources:
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
       Matcher:
-        HttpCode: '200-299'
+        HttpCode: '200-399'
       Port: 8080 # overriden when containers are attached
       Protocol: HTTP
       TargetType: ip
@@ -141,7 +141,7 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.0.2'
+    Value: '1.0.3'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:
