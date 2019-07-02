@@ -55,6 +55,11 @@ Parameters:
     ConstraintDescription: 'Must be in the range [0-3600]'
     MinValue: 0
     MaxValue: 3600
+  TargetType:
+    Description: 'Optional the type of target.'
+    Type: String
+    Default: 'ip' # compatible with the old version
+    AllowedValues: ['instance', 'ip', 'lambda']
 Conditions:
   HasAlertingModule: !Not [!Equals [!Ref AlertingModule, '']]
   HasPathPattern: !Not [!Equals [!Ref PathPattern, '']]
@@ -84,7 +89,7 @@ Resources:
         HttpCode: '200-399'
       Port: 8080 # overriden when containers are attached
       Protocol: HTTP
-      TargetType: ip
+      TargetType: !Ref TargetType
       TargetGroupAttributes:
       - Key: deregistration_delay.timeout_seconds
         Value: !Ref DeregistrationDelayInSeconds
