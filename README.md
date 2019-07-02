@@ -32,6 +32,7 @@ Resources:
         HostPattern: '' # optional
         PathPattern: '/*' # optional
         DeregistrationDelayInSeconds: '60' # optional
+        TargetType: 'ip'
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
 ```
 
@@ -113,6 +114,13 @@ Resources:
       <td>60</td>
       <td>no</td>
       <td>0-3600</td>
+    </tr>
+    <tr>
+      <td>TargetType</td>
+      <td>The type of target</td>
+      <td>ip</td>
+      <td>no</td>
+      <td>['instance', 'ip', 'lambda']</td>
     </tr>
   </tbody>
 </table>
