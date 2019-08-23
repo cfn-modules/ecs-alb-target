@@ -1,6 +1,6 @@
 {
   "name": "@cfn-modules/ecs-alb-target",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "ECS ALB target",
   "author": "Michael Wittig <michael@widdix.de>",
   "license": "Apache-2.0",

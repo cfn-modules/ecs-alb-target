@@ -1,0 +1,41 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'cfn-modules test'
+Resources:
+  Vpc:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      Parameters:
+        S3Endpoint: 'false' # speed up the test
+        DynamoDBEndpoint: 'false' # speed up the test
+        FlowLog: 'false' # speed up the test
+        NatGateways: 'false' # speed up the test
+      TemplateURL: './node_modules/@cfn-modules/vpc/module.yml'
+  Alb:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      Parameters:
+        VpcModule: !GetAtt 'Vpc.Outputs.StackName'
+      TemplateURL: './node_modules/@cfn-modules/alb/module.yml'
+  AlbListener:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      Parameters:
+        AlbModule: !GetAtt 'Alb.Outputs.StackName'
+        Port: 443
+        CertificateArn: 'arn:aws:acm:eu-west-1:237442020868:certificate/69184c54-2ff7-4d2f-b751-dacf0abaaddd'
+      TemplateURL: './node_modules/@cfn-modules/alb-listener/module.yml'
+  UserPool:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      TemplateURL: './node_modules/@cfn-modules/cognito-userpool/module.yml'
+  Target:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      Parameters:
+        AlbModule: !GetAtt 'Alb.Outputs.StackName'
+        AlbListenerModule: !GetAtt 'AlbListener.Outputs.StackName'
+        VpcModule: !GetAtt 'Vpc.Outputs.StackName'
+        CognitoUserPoolModule: !GetAtt 'UserPool.Outputs.StackName'
+        AuthCallbackDomain: 'app.widdix.de'        
+      TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
