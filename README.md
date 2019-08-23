@@ -28,10 +28,12 @@ Resources:
         AlbListenerModule: !GetAtt 'AlbListener.Outputs.StackName' # required
         VpcModule: !GetAtt 'Vpc.Outputs.StackName' # required
         AlertingModule: '' # optional
+        CognitoUserPoolModule: '' # optional
         Priority: '1' # optional
         HostPattern: '' # optional
         PathPattern: '/*' # optional
         DeregistrationDelayInSeconds: '60' # optional
+        AuthCallbackDomain: 'app.widdix.de' # optional, required when CognitoUserPoolModule is set
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
 ```
 
@@ -127,7 +129,7 @@ Resources:
       <td>The domain name used to access a target which requires authentication via a Cognito User Pool, required when CognitoUserPoolModule is set.</td>
       <td></td>
       <td>no</td>
-      <td>app.widdix.de</td>
+      <td></td>
     </tr>
   </tbody>
 </table>
