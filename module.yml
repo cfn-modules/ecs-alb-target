@@ -29,6 +29,10 @@ Parameters:
     Description: 'Optional but recommended stack name of alerting module.'
     Type: String
     Default: ''
+  CognitoUserPoolModule:
+    Description: 'Optional stack name of cognito-userpool module.'
+    Type: String
+    Default: ''
   Priority:
     Description: 'The priority for the rule. Elastic Load Balancing evaluates rules in priority order, from the lowest value to the highest value. If a request satisfies a rule, Elastic Load Balancing ignores all subsequent rules. A target group can have only one rule with a given priority.'
     Type: Number
@@ -55,8 +59,13 @@ Parameters:
     ConstraintDescription: 'Must be in the range [0-3600]'
     MinValue: 0
     MaxValue: 3600
+  AuthCallbackDomain:
+    Description: 'Optional the domain name used to access a target which requires authentication via a Cognito User Pool, required when CognitoUserPoolModule is set.'
+    Type: String
+    Default: ''
 Conditions:
   HasAlertingModule: !Not [!Equals [!Ref AlertingModule, '']]
+  HasCognitoUserPoolModule: !Not [!Equals [!Ref CognitoUserPoolModule, '']]
   HasPathPattern: !Not [!Equals [!Ref PathPattern, '']]
   HasHostPattern: !Not [!Equals [!Ref HostPattern, '']]
 Resources:
@@ -64,13 +73,45 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::ListenerRule'
     Properties:
       Actions:
+      - !If
+        - HasCognitoUserPoolModule
+        - Type: 'authenticate-cognito'
+          AuthenticateCognitoConfig:
+            OnUnauthenticatedRequest: 'authenticate'
+            Scope: 'openid'
+            SessionCookieName: 'AWSELBAuthSessionCookie'
+            SessionTimeout: 86400 #24 hours
+            UserPoolArn: {'Fn::ImportValue': !Sub '${CognitoUserPoolModule}-Arn'}
+            UserPoolClientId: !Ref UserPoolClient
+            UserPoolDomain: {'Fn::ImportValue': !Sub '${CognitoUserPoolModule}-Domain'}
+          Order: 1
+        - !Ref 'AWS::NoValue'
       - Type: forward
         TargetGroupArn: !Ref TargetGroup
+        Order: 2
       Conditions:
       - !If [HasHostPattern, {Field: host-header, Values: [!Ref HostPattern]}, !Ref 'AWS::NoValue']
       - !If [HasPathPattern, {Field: path-pattern, Values: [!Ref PathPattern]}, !Ref 'AWS::NoValue']
       ListenerArn: {'Fn::ImportValue': !Sub '${AlbListenerModule}-Arn'}
       Priority: !Ref Priority
+  UserPoolClient:
+    Condition: HasCognitoUserPoolModule
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      AllowedOAuthFlows:
+      - code
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+      - email
+      - openid
+      - profile
+      - aws.cognito.signin.user.admin
+      CallbackURLs:
+      - !Sub https://${AuthCallbackDomain}/oauth2/idpresponse
+      GenerateSecret: true
+      SupportedIdentityProviders:
+      - COGNITO
+      UserPoolId: {'Fn::ImportValue': !Sub '${CognitoUserPoolModule}-Id'}
   TargetGroup:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
     Properties:
@@ -141,7 +182,7 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.0.3'
+    Value: '1.0.4'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:

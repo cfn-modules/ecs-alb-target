@@ -44,6 +44,7 @@ Resources:
 
 * [alb](https://github.com/cfn-modules/alb)
 * [fargate-service](https://github.com/cfn-modules/fargate-service)
+* [cognito-userpool](https://github.com/cfn-modules/cognito-userpool)
 
 ## Parameters
 
@@ -87,6 +88,13 @@ Resources:
       <td></td>
     </tr>
     <tr>
+      <td>CognitoUserPoolModule</td>
+      <td>Stack name of <a href="https://www.npmjs.com/package/@cfn-modules/cognito-userpool">cognito-userpool module</a></td>
+      <td></td>
+      <td>no</td>
+      <td></td>
+    </tr>
+    <tr>
       <td>Priority</td>
       <td>The priority for the rule. Elastic Load Balancing evaluates rules in priority order, from the lowest value to the highest value. If a request satisfies a rule, Elastic Load Balancing ignores all subsequent rules. A target group can have only one rule with a given priority.</td>
       <td>1</td>
@@ -113,6 +121,13 @@ Resources:
       <td>60</td>
       <td>no</td>
       <td>0-3600</td>
+    </tr>
+    <tr>
+      <td>AuthCallbackDomain</td>
+      <td>The domain name used to access a target which requires authentication via a Cognito User Pool, required when CognitoUserPoolModule is set.</td>
+      <td></td>
+      <td>no</td>
+      <td>app.widdix.de</td>
     </tr>
   </tbody>
 </table>
