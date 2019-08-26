@@ -149,6 +149,7 @@ Resources:
         Value: {'Fn::ImportValue': !Sub '${AlbModule}-LoadBalancerFullName'}
       - Name: TargetGroup
         Value: !GetAtt TargetGroup.TargetGroupFullName
+      TreatMissingData: notBreaching
   TargetConnectionErrorCountTooHighAlarm:
     Condition: HasAlertingModule
     Type: 'AWS::CloudWatch::Alarm'
@@ -168,6 +169,7 @@ Resources:
         Value: {'Fn::ImportValue': !Sub '${AlbModule}-LoadBalancerFullName'}
       - Name: TargetGroup
         Value: !GetAtt TargetGroup.TargetGroupFullName
+      TreatMissingData: notBreaching
   SecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
@@ -182,7 +184,7 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.0.4'
+    Value: '1.1.0'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:
