@@ -34,6 +34,7 @@ Resources:
         PathPattern: '/*' # optional
         DeregistrationDelayInSeconds: '60' # optional
         AuthCallbackDomain: 'app.widdix.de' # optional, required when CognitoUserPoolModule is set
+        HealthCheckPath: '/' # optional
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
 ```
 
@@ -128,6 +129,13 @@ Resources:
       <td>AuthCallbackDomain</td>
       <td>The domain name used to access a target which requires authentication via a Cognito User Pool, required when CognitoUserPoolModule is set.</td>
       <td></td>
+      <td>no</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>HealthCheckPath</td>
+      <td>The HTTP GET request is sent to this path. The response status code must be in the range 200-399 for healthy containers</td>
+      <td>/</td>
       <td>no</td>
       <td></td>
     </tr>
