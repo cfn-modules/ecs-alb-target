@@ -63,6 +63,10 @@ Parameters:
     Description: 'Optional the domain name used to access a target which requires authentication via a Cognito User Pool, required when CognitoUserPoolModule is set.'
     Type: String
     Default: ''
+  HealthCheckPath:
+    Description: 'The HTTP GET request is sent to this path. The response status code must be in the range 200-399 for healthy containers.'
+    Type: String
+    Default: '/'
 Conditions:
   HasAlertingModule: !Not [!Equals [!Ref AlertingModule, '']]
   HasCognitoUserPoolModule: !Not [!Equals [!Ref CognitoUserPoolModule, '']]
@@ -116,7 +120,7 @@ Resources:
     Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
     Properties:
       HealthCheckIntervalSeconds: 15
-      HealthCheckPath: '/'
+      HealthCheckPath: !Ref HealthCheckPath
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 2
@@ -184,7 +188,7 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.1.0'
+    Value: '1.2.0'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:
