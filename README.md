@@ -35,6 +35,7 @@ Resources:
         DeregistrationDelayInSeconds: '60' # optional
         AuthCallbackDomain: 'app.widdix.de' # optional, required when CognitoUserPoolModule is set
         HealthCheckPath: '/' # optional
+        HealthCheckPort: '' # optional
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
 ```
 
@@ -136,6 +137,13 @@ Resources:
       <td>HealthCheckPath</td>
       <td>The HTTP GET request is sent to this path. The response status code must be in the range 200-399 for healthy containers</td>
       <td>/</td>
+      <td>no</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>HealthCheckPort</td>
+      <td>The HTTP GET request is sent to this port (if you specify no port the traffic port is used where the load balancer sends the traffic to)</td>
+      <td></td>
       <td>no</td>
       <td></td>
     </tr>

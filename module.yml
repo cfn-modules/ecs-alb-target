@@ -67,11 +67,16 @@ Parameters:
     Description: 'The HTTP GET request is sent to this path. The response status code must be in the range 200-399 for healthy containers.'
     Type: String
     Default: '/'
+  HealthCheckPort:
+    Description: 'The HTTP GET request is sent to this port (if you specify no port the traffic port is used where the load balancer sends the traffic to) .'
+    Type: String
+    Default: ''
 Conditions:
   HasAlertingModule: !Not [!Equals [!Ref AlertingModule, '']]
   HasCognitoUserPoolModule: !Not [!Equals [!Ref CognitoUserPoolModule, '']]
   HasPathPattern: !Not [!Equals [!Ref PathPattern, '']]
   HasHostPattern: !Not [!Equals [!Ref HostPattern, '']]
+  HasHealthCheckPort: !Not [!Equals [!Ref HealthCheckPort, '']]
 Resources:
   ListenerRule:
     Type: 'AWS::ElasticLoadBalancingV2::ListenerRule'
@@ -121,6 +126,7 @@ Resources:
     Properties:
       HealthCheckIntervalSeconds: 15
       HealthCheckPath: !Ref HealthCheckPath
+      HealthCheckPort: !If [HasHealthCheckPort, !Ref HealthCheckPort, !Ref 'AWS::NoValue']
       HealthCheckProtocol: HTTP
       HealthCheckTimeoutSeconds: 10
       HealthyThresholdCount: 2
@@ -188,7 +194,7 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.2.1'
+    Value: '1.3.0'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:
