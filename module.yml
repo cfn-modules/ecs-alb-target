@@ -84,7 +84,7 @@ Resources:
             OnUnauthenticatedRequest: 'authenticate'
             Scope: 'openid'
             SessionCookieName: 'AWSELBAuthSessionCookie'
-            SessionTimeout: 86400 #24 hours
+            SessionTimeout: 86400 # 24 hours
             UserPoolArn: {'Fn::ImportValue': !Sub '${CognitoUserPoolModule}-Arn'}
             UserPoolClientId: !Ref UserPoolClient
             UserPoolDomain: {'Fn::ImportValue': !Sub '${CognitoUserPoolModule}-Domain'}
