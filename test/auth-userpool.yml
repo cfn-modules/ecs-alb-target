@@ -37,5 +37,5 @@ Resources:
         AlbListenerModule: !GetAtt 'AlbListener.Outputs.StackName'
         VpcModule: !GetAtt 'Vpc.Outputs.StackName'
         CognitoUserPoolModule: !GetAtt 'UserPool.Outputs.StackName'
-        AuthCallbackDomain: 'app.widdix.de'        
+        AuthCallbackDomain: 'app.widdix.de'
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
