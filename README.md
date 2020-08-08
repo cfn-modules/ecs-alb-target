@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/cfn-modules/ecs-alb-target.svg?branch=master)](https://travis-ci.org/cfn-modules/ecs-alb-target)
-[![NPM version](https://img.shields.io/npm/v/@cfn-modules/ecs-alb-target.svg)](https://www.npmjs.com/package/@cfn-modules/ecs-alb-target)
-
 # cfn-modules: ECS ALB target
 
 ECS ALB target.
