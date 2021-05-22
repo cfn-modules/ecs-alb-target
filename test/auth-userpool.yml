@@ -1,7 +1,23 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'cfn-modules test'
+Parameters:
+  HostedZoneId:
+    Description: 'Route53 hosted zone id'
+    Type: String
 Resources:
+  HostedZone:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      Parameters:
+        Id: !Ref HostedZoneId
+      TemplateURL: './node_modules/@cfn-modules/route53-hosted-zone-wrapper/module.yml'
+  Certificate:
+    Type: 'AWS::CloudFormation::Stack'
+    Properties:
+      Parameters:
+        HostedZoneModule: !GetAtt 'HostedZone.Outputs.StackName'
+      TemplateURL: './node_modules/@cfn-modules/acm-wildcard-certificate-public/module.yml'
   Vpc:
     Type: 'AWS::CloudFormation::Stack'
     Properties:
@@ -23,7 +39,7 @@ Resources:
       Parameters:
         AlbModule: !GetAtt 'Alb.Outputs.StackName'
         Port: 443
-        CertificateArn: 'arn:aws:acm:eu-west-1:237442020868:certificate/69184c54-2ff7-4d2f-b751-dacf0abaaddd'
+        CertificateArn: !GetAtt 'Certificate.Outputs.Arn'
       TemplateURL: './node_modules/@cfn-modules/alb-listener/module.yml'
   UserPool:
     Type: 'AWS::CloudFormation::Stack'
@@ -37,5 +53,5 @@ Resources:
         AlbListenerModule: !GetAtt 'AlbListener.Outputs.StackName'
         VpcModule: !GetAtt 'Vpc.Outputs.StackName'
         CognitoUserPoolModule: !GetAtt 'UserPool.Outputs.StackName'
-        AuthCallbackDomain: 'app.widdix.de'
+        AuthCallbackDomain: !GetAtt 'HostedZone.Outputs.Name'
       TemplateURL: './node_modules/@cfn-modules/ecs-alb-target/module.yml'
