@@ -194,13 +194,21 @@ Outputs:
   ModuleId:
     Value: 'ecs-alb-target'
   ModuleVersion:
-    Value: '1.3.0'
+    Value: '1.4.0'
   StackName:
     Value: !Ref 'AWS::StackName'
   Arn:
     Value: !Ref TargetGroup
     Export:
       Name: !Sub '${AWS::StackName}-Arn'
+  Name:
+    Value: !GetAtt 'TargetGroup.TargetGroupName'
+    Export:
+      Name: !Sub '${AWS::StackName}-Name'
+  FullName:
+    Value: !GetAtt 'TargetGroup.TargetGroupFullName'
+    Export:
+      Name: !Sub '${AWS::StackName}-FullName'
   SecurityGroupId:
     Value: !Ref SecurityGroup
     Export:
