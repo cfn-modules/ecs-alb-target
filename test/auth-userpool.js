@@ -5,7 +5,7 @@ test.serial('auth-userpool', async t => {
   const stackName = cfntest.stackName();
   try {
     t.log(await cfntest.createStack(`${__dirname}/auth-userpool.yml`, stackName, {
-      HostedZoneId: 'Z08057981AMLWUWNFCQLS'
+      HostedZoneId: 'Z06496441UUZUWB5DC4QT'
     }));
     // what could we test here?
   } finally {
